@@ -3,8 +3,8 @@
 
 #include "tcp_socket.h"
 #include "tcp_socket_internal.h"
-#include "on_iport.h"
-#include "on_malloc.h"
+#include "ocnet_iport.h"
+#include "ocnet_malloc.h"
 
 #include "onlfds.h"
 
@@ -23,14 +23,14 @@ int main(int argc, char *argv[])
         port = atoi(argv[1]);
     }
 
-    tcp_sock = tcp_socket_new(ONC_SOCK_TCP, 0, 10687,
-            ONC_EVENT_READ | ONC_EVENT_ERROR);
-    if (ONC_SOCKET_INVALID == tcp_sock) {
+    tcp_sock = tcp_socket_new(OCNET_SOCK_TCP, 0, 10687,
+            OCNET_EVENT_READ | OCNET_EVENT_ERROR);
+    if (NULL == tcp_sock) {
         return -1;
     }
 
     tcp_conn = tcp_connection_connect(tcp_sock,
-            kkt_iport_parse_ip("127.0.0.1"), port);
+            ocnet_iport_parse_ip("127.0.0.1"), port);
     if (NULL == tcp_conn) {
         tcp_socket_del(tcp_sock);
         return -1;
@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    lfds = onc_lfds_new();
+    lfds = ocnet_lfds_new();
 
     do {
         int rc = 0;
@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
         usleep(100 * 1000);
     } while (1);
 
-    onc_lfds_del(lfds);
+    ocnet_lfds_del(lfds);
 
     tcp_socket_del(tcp_sock);
     return 0;

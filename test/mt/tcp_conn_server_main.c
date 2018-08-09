@@ -1,8 +1,10 @@
 #include <stdio.h>
 
+#include "logger.h"
+
 #include "tcp_socket_internal.h"
-#include "on_iport.h"
-#include "on_malloc.h"
+#include "ocnet_iport.h"
+#include "ocnet_malloc.h"
 
 #include "onlfds.h"
 
@@ -12,15 +14,15 @@ int main(int argc, char *argv[])
 {
     void *tcp_sock = NULL;
     void *tcp_conn = NULL;
-    onc_ip_t ip;
-    onc_port_t port;
+    ocnet_ip_t ip;
+    ocnet_port_t port;
     int recv_result = 0;
     char buf[1024] = {0};
     void *lfds = NULL;
     int rc = 0;
 
     tcp_sock = tcp_socket_new(0, 10688, 1000,
-            ONC_EVENT_READ | ONC_EVENT_ERROR);
+            OCNET_EVENT_READ | OCNET_EVENT_ERROR);
     if (NULL == tcp_sock) {
         return -1;
     }
@@ -30,7 +32,7 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    lfds = onc_lfds_new();
+    lfds = ocnet_lfds_new();
 
     do {
         rc = tcp_socket_event_wait(tcp_sock, lfds, 1000);
@@ -72,7 +74,7 @@ int main(int argc, char *argv[])
         usleep(100 * 1000);
     } while (1);
 
-    onc_lfds_del(lfds);
+    ocnet_lfds_del(lfds);
     tcp_connection_del(tcp_conn);
     tcp_socket_del(tcp_sock);
     return 0;
