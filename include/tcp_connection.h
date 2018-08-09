@@ -1,7 +1,7 @@
 #ifndef __KKT_TCP_CONNECTION____H__
 #define __KKT_TCP_CONNECTION____H__
 
-#include "on_iport.h"
+#include "ocnet_iport.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -9,10 +9,10 @@ extern "C" {
 
 void *tcp_connection_accept(void *sock, int event_wait,
             void *lfds, int millseconds);
-void *tcp_connection_connect(void *sock, onc_ip_t ip, onc_port_t port);
+void *tcp_connection_connect(void *sock, ocnet_ip_t ip, ocnet_port_t port);
 void  tcp_connection_del(void *tcp_conn);
-onc_ip_t tcp_connection_get_ip(void *tcp_conn);
-onc_ip_t tcp_connection_get_port(void *tcp_conn);
+ocnet_ip_t tcp_connection_get_ip(void *tcp_conn);
+ocnet_ip_t tcp_connection_get_port(void *tcp_conn);
 
 int   tcp_connection_event_enroll(void *tcp_conn, void *evgrp);
 int   tcp_connection_event_del(void *tcp_conn, void *evgrp);
